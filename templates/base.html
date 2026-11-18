@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Finanzas AI{% endblock %} · Asesor financiero educativo</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">💼 Finanzas <span>AI</span></div>
+    <nav>
+      <a href="/" class="{{ 'active' if page == 'chat' }}">Asistente</a>
+      <a href="/dashboard" class="{{ 'active' if page == 'dashboard' }}">Panel</a>
+      <a href="/transactions" class="{{ 'active' if page == 'transactions' }}">Movimientos</a>
+    </nav>
+  </header>
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="footer">
+    Herramienta <strong>educativa</strong>: no ejecuta operaciones financieras ni constituye asesoría profesional.
+    No escriba contraseñas ni números de tarjeta.
+  </footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

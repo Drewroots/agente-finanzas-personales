@@ -1,0 +1,25 @@
+﻿Proveedor: gemini | Modelo: gemini-3.5-flash-lite
+
+POST /api/chat  '¿Cuáles son mis principales gastos este mes?' -> HTTP 200
+herramientas: [('analyze_finances', 'ok')]
+Para el mes de noviembre de 2026, tus gastos totales registrados ascienden a $2.350.000 COP. A continuación te muestro la distribución de tus principales gastos por categoría, ordenados de mayor a menor:
+
+- Vivienda: $900.000 (38,30%)
+- Alimentación: $610.000 (25,96%)
+- Educación: $250.000 (10,64%)
+- Servicios: $210.000 (8,94%)
+- Entretenimiento: $210.000 (8,94%)
+- Transporte: $170.000 (7,23%)
+
+El cálculo de cada porcentaje se realiza con la fórmula: porcentaje = (total de la categoría / total de gastos del mes) x 100. Por ejemplo, para Vivienda: ($900.000 / $2.350.000) x 100 = 38,30%.
+
+Puedes consultar una vista gráfica de estos gastos en el dashboard web (/dashboard) o utilizando el comando /graficos en la terminal.
+
+POST /api/chat  '¿Y qué significa diversificar mi capital?' -> HTTP 200
+herramientas: [('investment_analysis', 'ok')]
+Diversificar significa repartir tu capital entre distintas clases de activos, sectores o emisores para que un mal resultado en uno de ellos no afecte gravemente a la totalidad de tu patrimonio. 
+
+- Qué busca: Reducir el riesgo específico (por ejemplo, el tropiezo de una empresa o sector en particular).
+- Lo que no hace: No elimina el riesgo general del mercado ni la posibilidad de sufrir pérdidas.
+
+Recuerda que toda inversión implica riesgo, incluida la posible pérdida del capital. Además, al planificar tus inversiones debes tener en cuenta las comisiones, los impuestos, la inflación y tu necesidad de liquidez. Esta información es puramente educativa y no constituye una recomendación de inversión ni asesoría financiera profesional.

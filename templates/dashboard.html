@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Panel{% endblock %}
+{% block content %}
+<div class="toolbar">
+  <h1>Panel financiero</h1>
+  <div class="toolbar-actions">
+    <label>Periodo <input type="month" id="period"></label>
+    <button class="btn ghost" id="btn-snapshot" type="button" title="Guarda el patrimonio de hoy en el historial">📸 Guardar patrimonio</button>
+  </div>
+</div>
+<div id="demo-banner" class="banner" hidden>Estás viendo datos de <strong>demostración</strong>, no información real.</div>
+
+<section class="kpis" id="kpis"></section>
+
+<section class="grid-2">
+  {% for name in chart_names %}
+  <figure class="card chart"><img data-chart="{{ name }}" alt="Gráfico {{ name }}" loading="lazy"></figure>
+  {% endfor %}
+</section>
+
+<section class="grid-2">
+  <div class="card">
+    <h3>Presupuesto del mes</h3>
+    <div id="budget"></div>
+    <form id="form-budget" class="inline-form">
+      <select name="category" required>{% for c in ['Alimentación','Transporte','Educación','Vivienda','Entretenimiento','Salud','Servicios','Otros'] %}<option>{{ c }}</option>{% endfor %}</select>
+      <input name="amount" type="number" min="1" step="0.01" placeholder="Monto mensual" required>
+      <button class="btn small" type="submit">Fijar</button>
+    </form>
+  </div>
+  <div class="card">
+    <h3>Objetivos de ahorro</h3>
+    <div id="goals"></div>
+    <form id="form-goal" class="inline-form">
+      <input name="name" placeholder="Nombre" maxlength="80" required>
+      <input name="target_amount" type="number" min="1" step="0.01" placeholder="Meta" required>
+      <input name="current_amount" type="number" min="0" step="0.01" placeholder="Ahorrado">
+      <input name="deadline" type="date" title="Fecha límite (opcional)">
+      <button class="btn small" type="submit">Crear</button>
+    </form>
+  </div>
+</section>
+
+<section class="card">
+  <h3>Patrimonio: activos, pasivos e inversiones declaradas</h3>
+  <div class="grid-3" id="holdings"></div>
+  <form id="form-holding" class="inline-form">
+    <select name="kind" id="holding-kind">
+      <option value="assets">Activo</option><option value="liabilities">Pasivo</option><option value="investments">Inversión declarada</option>
+    </select>
+    <input name="name" placeholder="Nombre" maxlength="80" required>
+    <select name="type" id="holding-type" required></select>
+    <input name="value" type="number" min="0" step="0.01" placeholder="Valor / saldo" required>
+    <button class="btn small" type="submit">Agregar</button>
+  </form>
+  <p class="muted small">Las inversiones declaradas son solo un registro: la aplicación no ejecuta operaciones.</p>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>{% endblock %}

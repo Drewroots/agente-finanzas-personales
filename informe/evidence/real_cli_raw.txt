@@ -1,0 +1,24 @@
+
+==============================================================
+  Agente Inteligente de Finanzas Personales  (modo educativo)
+  Escriba su consulta en lenguaje natural.  /ayuda para ver comandos
+==============================================================
+
+Modelo: gemini-3.5-flash-lite (proveedor: gemini)
+
+Tú >   · herramienta: analyze_finances summary -> ok
+
+Asesor > Durante este mes (noviembre de 2026) has recibido un total de $3.500.000,00, según 1 registro de ingresos en el sistema.
+
+Tú >   · herramienta: calculate_net_worth calculate -> ok
+
+Asesor > Tu patrimonio neto actual es de $8.200.000,00.
+
+El cálculo se realiza con la fórmula:
+Patrimonio neto = total de activos - total de pasivos
+
+Los datos utilizados son:
+- Total de activos (incluyendo efectivo, cuentas de ahorro, bienes muebles e inversiones declaradas): $13.000.000,00
+- Total de pasivos (incluyendo tarjetas de crédito y préstamos): $4.800.000,00
+
+Tú > Hasta pronto.

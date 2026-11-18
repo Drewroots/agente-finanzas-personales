@@ -1,0 +1,12 @@
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+# Datos personales: no se versionan
+data/finanzas.json
+data/finanzas.tmp
+data/finanzas.corrupto-*.json
+data/finanzas_demo.json
+data/backups/
+static/charts/*.png

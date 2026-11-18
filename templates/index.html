@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Asistente{% endblock %}
+{% block content %}
+<section class="chat-layout">
+  <div class="card chat-card">
+    <div class="card-head">
+      <h2>Asistente financiero</h2>
+      <button id="reset-chat" class="btn ghost small" type="button">Nueva conversación</button>
+    </div>
+    <div id="chat-log" class="chat-log" aria-live="polite">
+      <div class="msg bot">
+        <p>Hola 👋 Soy tu asistente de finanzas personales. Puedo registrar ingresos y gastos, calcular tu
+        patrimonio, analizar tu flujo de caja y explicarte conceptos de inversión con simulaciones
+        <strong>hipotéticas</strong>. Solo uso los datos que tú registras.</p>
+      </div>
+    </div>
+    <form id="chat-form" class="chat-form" autocomplete="off">
+      <input id="chat-input" type="text" maxlength="2000" placeholder="Ej.: Gasté 45000 en el mercado hoy" required>
+      <button class="btn" type="submit" id="chat-send">Enviar</button>
+    </form>
+  </div>
+  <aside class="card">
+    <h3>Prueba preguntando</h3>
+    <div class="chips" id="suggestions">
+      <button type="button" class="chip">¿Cuánto he gastado este mes?</button>
+      <button type="button" class="chip">¿Cuál es mi patrimonio neto?</button>
+      <button type="button" class="chip">¿Cuáles son mis principales gastos?</button>
+      <button type="button" class="chip">¿Qué porcentaje de mis ingresos estoy ahorrando?</button>
+      <button type="button" class="chip">¿Cómo están distribuidos mis activos?</button>
+      <button type="button" class="chip">¿Qué significa diversificar mi capital?</button>
+      <button type="button" class="chip">Simula 5000000 con aporte mensual de 200000 a 8% anual durante 5 años</button>
+    </div>
+    <p class="muted small">Para ver gráficos abre el <a href="/dashboard">Panel</a>.</p>
+  </aside>
+</section>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/chat.js') }}"></script>{% endblock %}

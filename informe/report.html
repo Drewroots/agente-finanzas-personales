@@ -1,0 +1,477 @@
+﻿<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Agente inteligente de finanzas personales con Claude y Python</title>
+<style>
+  @page { size: Letter; margin: 0.7in 0.62in 0.8in 0.62in; }
+  * { box-sizing: border-box; }
+  body { font-family: "Times New Roman", Times, serif; font-size: 9.6pt; line-height: 1.22; color: #000; margin: 0; text-align: justify; hyphens: auto; }
+  /* ---------- portada ---------- */
+  .cover { height: 9.3in; page-break-after: always; text-align: center; display: flex; flex-direction: column; justify-content: space-between; padding: .2in .4in; }
+  .cover .uni { font-size: 15pt; font-weight: bold; letter-spacing: .5px; }
+  .cover .meta { font-size: 11.5pt; line-height: 1.5; }
+  .cover h1 { font-size: 22pt; line-height: 1.2; margin: 0 0 10px; }
+  .cover .sub { font-size: 13pt; font-style: italic; }
+  .cover .group { font-size: 12pt; line-height: 1.7; }
+  .cover .rule { border-top: 2px solid #000; width: 60%; margin: 14px auto; }
+  /* ---------- artículo ---------- */
+  .titleblock { column-span: all; text-align: center; margin-bottom: 10px; }
+  .titleblock h1 { font-size: 20pt; font-weight: normal; line-height: 1.15; margin: 0 0 8px; }
+  .authors { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; font-size: 10pt; }
+  .authors div { min-width: 140px; } .authors i { display: block; font-size: 8.8pt; }
+  .paper { column-count: 2; column-gap: .27in; }
+  .abstract { column-span: all; margin: 4px 0 8px; font-weight: bold; font-size: 9.2pt; }
+  .abstract span.h { font-style: italic; }
+  h2 { font-size: 9.6pt; font-weight: normal; text-transform: uppercase; text-align: center; margin: 11px 0 4px; letter-spacing: .3px; break-after: avoid; }
+  h3 { font-size: 9.6pt; font-style: italic; font-weight: normal; margin: 7px 0 2px; break-after: avoid; }
+  p { margin: 0 0 4px; text-indent: .17in; } p.ni { text-indent: 0; }
+  ul, ol { margin: 2px 0 4px; padding-left: .22in; } li { margin-bottom: 1px; }
+  code { font-family: "Courier New", monospace; font-size: 8.3pt; }
+  figure { margin: 6px 0; text-align: center; break-inside: avoid; }
+  figure.wide { column-span: all; margin: 8px 0; }
+  figure img, figure svg { max-width: 100%; height: auto; border: .5px solid #bbb; }
+  figcaption { font-size: 8.2pt; margin-top: 3px; text-align: center; }
+  .tcap { font-size: 8.2pt; text-align: center; text-transform: uppercase; margin: 8px 0 2px; break-after: avoid; }
+  .tcap b { display: block; text-transform: none; font-weight: normal; }
+  table { border-collapse: collapse; width: 100%; font-size: 8pt; margin-bottom: 6px; break-inside: avoid; text-align: left; }
+  th, td { border: .6px solid #000; padding: 1.5px 3px; vertical-align: top; } th { background: #e9e9e9; }
+  td.r { text-align: right; }
+  pre.term { background: #12161c; color: #d6e2ee; font-family: "Courier New", monospace; font-size: 6.9pt; line-height: 1.25; padding: 6px 8px; margin: 0; text-align: left; white-space: pre-wrap; word-break: break-word; border-radius: 3px; }
+  pre.term .p { color: #7fd1ee; } pre.term .g { color: #8be28b; } pre.term .y { color: #f2d36b; } pre.term .r { color: #ff8f7a; }
+  pre.code { font-family: "Courier New", monospace; font-size: 7.3pt; background: #f3f3f3; border: .5px solid #bbb; padding: 4px 6px; text-align: left; white-space: pre-wrap; margin: 4px 0 6px; break-inside: avoid; }
+  .refs { font-size: 8.3pt; } .refs ol { list-style: none; counter-reset: r; padding-left: 0; } .refs li { counter-increment: r; padding-left: 26px; text-indent: -26px; text-align: left; margin-bottom: 3px; }
+  .refs li::before { content: "[" counter(r) "]"; display: inline-block; width: 26px; text-indent: 0; }
+  .note { font-size: 8.3pt; }
+</style>
+</head>
+<body>
+
+<!-- ============================ PORTADA ============================ -->
+<section class="cover">
+  <div>
+    <div class="uni">CORPORACIÓN UNIVERSITARIA DEL HUILA – CORHUILA</div>
+    <div class="meta">Programa de Ingeniería de Sistemas<br>Facultad de Ingeniería<br>Neiva, Huila, Colombia</div>
+  </div>
+  <div>
+    <div class="rule"></div>
+    <h1>Agente inteligente de finanzas personales<br>basado en modelos de lenguaje y uso de herramientas</h1>
+    <div class="sub">Diseño, implementación y validación de un asistente educativo con interfaz de consola, panel web y API REST</div>
+    <div class="rule"></div>
+  </div>
+  <div class="meta">
+    <b>Parcial práctico – Tercer corte (30 %)</b><br>
+    Asignatura: Electiva – Aplicaciones con Inteligencia Artificial<br>
+    Semestre: 2026-2<br>
+    Docente: José Miguel Llanos Mosquera
+  </div>
+  <div class="group">
+    <b>Integrantes</b><br>
+    [[INTEGRANTES_PORTADA]]
+  </div>
+  <div class="meta">Sustentación: 18 de noviembre de 2026 · Salón C-411, Sede Prado Alto<br>Neiva, noviembre de 2026</div>
+</section>
+
+<!-- ============================ ARTÍCULO ============================ -->
+<div class="paper">
+  <div class="titleblock">
+    <h1>Agente inteligente de finanzas personales basado en modelos de lenguaje y uso de herramientas</h1>
+    <div class="authors">[[AUTORES_ARTICULO]]</div>
+  </div>
+
+  <div class="abstract"><span class="h">Resumen—</span>Este artículo presenta el diseño, la implementación y la validación de <i>Finanzas AI</i>, un agente inteligente educativo que ayuda a una persona a registrar ingresos y gastos, calcular su patrimonio neto, analizar su flujo de caja, administrar presupuestos y objetivos de ahorro y estudiar la diversificación del capital mediante escenarios hipotéticos. El sistema adopta una arquitectura de cinco capas (interfaces, núcleo del agente, herramientas, lógica de negocio y almacenamiento/visualización) en la que un modelo de lenguaje configurable (Gemini, Groq, Ollama o Claude, mediante un adaptador compatible con la API de OpenAI) se limita a interpretar la intención del usuario y a seleccionar herramientas, mientras que todos los cálculos se ejecutan en funciones deterministas con aritmética decimal. El agente se ofrece por consola, por un panel web en Flask y por una API REST. La solución incorpora salvaguardas de seguridad: confirmación explícita antes de modificar o eliminar datos, rechazo de datos bancarios sensibles, copias de seguridad automáticas y advertencias de riesgo en toda salida de inversión. La validación incluyó 89 pruebas automatizadas, todas aprobadas, y pruebas funcionales en consola y web con datos de demostración, incluida una validación con un modelo real (Gemini 3.5 Flash-Lite, capa gratuita) cuyas cifras coincidieron con un cálculo independiente. Se discuten las limitaciones, entre ellas que la calidad de la selección de herramientas depende del modelo elegido, en especial si es pequeño o local, y que el sistema no constituye asesoría financiera.</div>
+  <div class="abstract"><span class="h">Términos de indexación—</span>agente inteligente, finanzas personales, modelos de lenguaje, uso de herramientas, Flask, Python, aritmética decimal, API REST.</div>
+
+  <h2>I. Introducción</h2>
+  <p>La administración de las finanzas personales exige registrar movimientos, clasificar gastos, conocer el patrimonio y tomar decisiones de ahorro e inversión con información incompleta. La literatura muestra que la alfabetización financiera está asociada con una mejor planificación y acumulación de riqueza [1], y que persisten brechas importantes de conocimiento entre los adultos de distintos países [2]. Una herramienta que traduzca preguntas cotidianas en cálculos verificables puede reducir la barrera de entrada a prácticas financieras sanas.</p>
+  <p>Los avances recientes en modelos de lenguaje de gran tamaño (LLM) permiten construir agentes que perciben una solicitud en lenguaje natural, razonan sobre ella y actúan sobre el entorno invocando herramientas [3]–[5]. Según el material de la asignatura [6] y la definición clásica de Russell y Norvig [7], un agente inteligente percibe su entorno mediante sensores, procesa la información y actúa mediante actuadores para alcanzar objetivos. Este trabajo materializa esa definición en un dominio concreto: la entrada del usuario y los datos registrados son la percepción, el LLM junto con las funciones financieras constituyen el procesamiento, y las herramientas que leen y escriben el almacenamiento son los actuadores.</p>
+  <p>Un riesgo conocido de los LLM es que pueden producir cifras plausibles pero inventadas. En finanzas personales esto es inaceptable. Por ello el proyecto separa de forma estricta la lógica del modelo de la lógica financiera: el modelo nunca calcula ni recuerda datos monetarios, solo decide qué herramienta invocar y explica sus resultados. El resto del artículo describe los objetivos (Sección II), el marco teórico (III), el desarrollo paso a paso (IV), los resultados con capturas de pantalla (V), una discusión de limitaciones (VI) y las conclusiones (VII).</p>
+
+  <h2>II. Objetivos</h2>
+  <h3>A. Objetivo general</h3>
+  <p class="ni">Desarrollar en Python 3 un agente inteligente de finanzas personales con enfoque educativo, basado en el patrón de uso de herramientas sobre un modelo de lenguaje configurable, que funcione por consola, web y API REST y cuyos resultados puedan auditarse.</p>
+  <h3>B. Objetivos específicos</h3>
+  <ol>
+    <li>Definir el tema y el alcance del agente y adaptar la arquitectura de cinco capas del ejemplo proporcionado en clase.</li>
+    <li>Implementar las funciones financieras (ingresos, gastos, flujo de caja, patrimonio, presupuesto, distribución de activos y simulación) con aritmética decimal.</li>
+    <li>Construir cuatro herramientas con esquemas JSON y conectarlas a un <i>Agent Loop</i> independiente del proveedor, con modelos gratuitos (Gemini, Groq, Ollama) o de pago (Claude).</li>
+    <li>Ofrecer interfaces de consola, panel web con gráficos y API REST sobre el mismo núcleo.</li>
+    <li>Incorporar salvaguardas de seguridad y responsabilidad financiera.</li>
+    <li>Verificar el funcionamiento mediante pruebas automatizadas y funcionales en consola y web.</li>
+  </ol>
+
+  <h2>III. Marco teórico</h2>
+  <h3>A. Agentes inteligentes</h3>
+  <p class="ni">Se distinguen cuatro tipos básicos: reactivos simples, basados en modelos, basados en objetivos y basados en utilidad [6], [7]. <i>Finanzas AI</i> es un agente basado en objetivos, pues el usuario declara metas (por ejemplo, un fondo de emergencia) y el sistema calcula el avance y el aporte mensual necesario, con rasgos de agente basado en modelos porque mantiene un estado interno persistente: movimientos, activos, pasivos, presupuestos e historial. Los enfoques con LLM intercalan razonamiento y acción [3] y permiten que el modelo aprenda a emplear herramientas externas [4].</p>
+  <h3>B. Uso de herramientas (<i>tool use</i>) y <i>Agent Loop</i></h3>
+  <p class="ni">En el patrón de uso de herramientas, la aplicación describe al modelo un conjunto de funciones con un esquema JSON; el modelo responde, cuando lo considera necesario, con un bloque <code>tool_use</code> que indica el nombre y los argumentos; la aplicación ejecuta la función y devuelve un <code>tool_result</code>, y el ciclo se repite hasta que el modelo emite una respuesta final [8]. Anthropic recomienda preferir flujos simples y componibles, y diseñar con cuidado la interfaz de las herramientas [5]. El cliente oficial de Python simplifica la comunicación con la API [9].</p>
+  <h3>C. Aritmética monetaria</h3>
+  <p class="ni">Los números de punto flotante binario no representan exactamente muchas fracciones decimales, de modo que sumas simples pueden acumular errores de redondeo [10], [11]. Por esa razón se emplea el tipo <code>Decimal</code> de Python [12], que realiza aritmética decimal con precisión controlada, y los montos se persisten como cadenas.</p>
+  <h3>D. Diversificación</h3>
+  <p class="ni">La teoría moderna de portafolios formalizó que repartir el capital entre activos con comportamientos distintos reduce el riesgo del conjunto sin necesariamente reducir el rendimiento esperado en la misma proporción [13]. El módulo de inversión del agente utiliza este concepto de forma estrictamente educativa, mediante la distribución porcentual y alertas de concentración.</p>
+  <h3>E. Interfaces web y API</h3>
+  <p class="ni">El panel utiliza Flask, un microframework WSGI para Python [14]. La API sigue el estilo arquitectónico REST, con recursos identificados por URL y métodos HTTP estándar [15]. Los gráficos se generan con Matplotlib [16].</p>
+
+  <h2>IV. Desarrollo</h2>
+  <p>El proyecto se desarrolló con la asistencia de Claude Code [17] en ocho etapas sucesivas. Cada etapa se verificó antes de continuar con la siguiente.</p>
+
+  <h3>A. Etapa 1: definición del tema, alcance y arquitectura</h3>
+  <p class="ni">El tema elegido es el <b>asesor y asistente de finanzas personales</b>. El alcance incluye registrar y clasificar ingresos y gastos, calcular patrimonio neto, analizar flujo de caja, definir presupuestos y objetivos de ahorro, estudiar la diversificación y generar informes y gráficos. Quedan <b>fuera</b> del alcance ejecutar operaciones financieras, gestionar credenciales o datos bancarios y emitir recomendaciones de inversión definitivas. A partir del diagrama de referencia del profesor (un agente de tareas con cuatro herramientas) se conservaron las cinco capas y se adaptó cada componente (Fig. 1 y Tabla I).</p>
+<figure class="wide" style="column-span:all">
+<svg viewBox="0 0 1000 470" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif">
+  <defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#333" stroke-width="2"/></marker></defs>
+  <rect width="1000" height="470" fill="#fafafa"/>
+  <g font-size="12" font-weight="bold" fill="#555">
+    <text x="12" y="22">CAPA 1 · INTERFACES</text><text x="12" y="132">CAPA 2 · NÚCLEO</text><text x="12" y="212">CAPA 3 · HERRAMIENTAS</text><text x="12" y="312">CAPA 4 · LÓGICA</text><text x="12" y="382">CAPA 5 · DATOS Y VISUALIZACIÓN</text></g>
+  <g fill="#fff" font-size="12" text-anchor="middle">
+    <rect x="40" y="30" width="270" height="70" rx="9" fill="#667eea"/><text x="175" y="58" font-weight="bold">CLI (main.py)</text><text x="175" y="78">Conversación en terminal</text>
+    <rect x="365" y="30" width="270" height="70" rx="9" fill="#1d9e75"/><text x="500" y="58" font-weight="bold">Dashboard web (app.py)</text><text x="500" y="78">Flask + HTML/CSS/JS + chat</text>
+    <rect x="690" y="30" width="270" height="70" rx="9" fill="#d85a30"/><text x="825" y="58" font-weight="bold">API REST (/api/*)</text><text x="825" y="78">JSON · GET/POST/PUT/DELETE</text>
+    <rect x="140" y="140" width="720" height="56" rx="9" fill="#7f77dd"/><text x="500" y="164" font-weight="bold">AGENT LOOP (agent.py) · LLM configurable (llm.py) · Tool Use</text><text x="500" y="183">recibe → interpreta → elige herramienta → ejecuta → interpreta resultado → responde</text>
+    <rect x="40" y="222" width="215" height="62" rx="9" fill="#2ecc71"/><text x="148" y="248" font-weight="bold">manage_transaction</text><text x="148" y="268">ingresos y gastos</text>
+    <rect x="270" y="222" width="215" height="62" rx="9" fill="#f39c12"/><text x="378" y="248" font-weight="bold">calculate_net_worth</text><text x="378" y="268">activos, pasivos, patrimonio</text>
+    <rect x="515" y="222" width="215" height="62" rx="9" fill="#3498db"/><text x="623" y="248" font-weight="bold">analyze_finances</text><text x="623" y="268">flujo, presupuesto, metas</text>
+    <rect x="745" y="222" width="215" height="62" rx="9" fill="#e74c3c"/><text x="853" y="248" font-weight="bold">investment_analysis</text><text x="853" y="268">educativo, simulaciones</text>
+    <rect x="140" y="322" width="720" height="44" rx="9" fill="#888780"/><text x="500" y="342" font-weight="bold">functions.py · validaciones y cálculos con Decimal</text><text x="500" y="358">sin llamadas al LLM · sin acceso a archivos</text>
+    <rect x="40" y="390" width="440" height="62" rx="9" fill="#c0392b"/><text x="260" y="416" font-weight="bold">storage.py → data/finanzas.json</text><text x="260" y="436">escritura atómica · backups · validación</text>
+    <rect x="520" y="390" width="440" height="62" rx="9" fill="#9b59b6"/><text x="740" y="416" font-weight="bold">charts.py · Matplotlib</text><text x="740" y="436">8 gráficos con títulos, ejes y moneda</text>
+  </g>
+  <g stroke="#333" stroke-width="2" fill="none" marker-end="url(#ar)">
+    <path d="M175 100V120H300V140"/><path d="M500 100V140"/><path d="M825 100V120H700V140"/>
+    <path d="M500 196V209H148V222"/><path d="M500 196V209H378V222"/><path d="M500 196V209H623V222"/><path d="M500 196V209H853V222"/>
+    <path d="M148 284V303H400V322"/><path d="M853 284V303H600V322"/><path d="M500 366V378H260V390"/><path d="M500 366V378H740V390"/>
+  </g>
+</svg>
+<figcaption>Fig. 1. Arquitectura de cinco capas de <i>Finanzas AI</i>, adaptada del diagrama de referencia del curso.</figcaption>
+</figure>
+  <div class="tcap">TABLA I<b>Adaptación de la arquitectura de referencia</b></div>
+  <table>
+    <tr><th>Capa</th><th>Ejemplo (tareas)</th><th>Agente de finanzas</th></tr>
+    <tr><td>1</td><td>CLI, Flask, API</td><td><code>main.py</code>, <code>app.py</code>, API <code>/api/*</code></td></tr>
+    <tr><td>2</td><td>Agent Loop</td><td><code>agent.py</code>, modelo por <code>.env</code></td></tr>
+    <tr><td>3</td><td>4 herramientas de tareas</td><td>4 herramientas financieras</td></tr>
+    <tr><td>4</td><td><code>functions.py</code></td><td><code>functions.py</code> con <code>Decimal</code></td></tr>
+    <tr><td>5</td><td><code>tareas.json</code>, <code>charts.py</code></td><td><code>finanzas.json</code>, <code>storage.py</code>, <code>charts.py</code></td></tr>
+  </table>
+
+  <h3>B. Etapa 2: lógica financiera (Capa 4)</h3>
+  <p class="ni">El archivo <code>functions.py</code> concentra toda la lógica como funciones puras que reciben datos, validan, calculan con <code>Decimal</code> y devuelven estructuras serializables. Se implementaron las once funciones requeridas (Tabla II) y otras de apoyo: gastos por categoría, gastos recurrentes, capacidad de ahorro, progreso de objetivos y simulación. Los montos se validan (positivos, finitos, con tope máximo), las fechas y periodos se normalizan y las categorías se aceptan sin distinguir tildes ni mayúsculas.</p>
+  <div class="tcap">TABLA II<b>Funciones principales de la Capa 4</b></div>
+  <table>
+    <tr><th>Función</th><th>Resultado</th></tr>
+    <tr><td><code>calculate_total_income / expenses</code></td><td>Total y número de registros</td></tr>
+    <tr><td><code>calculate_cash_flow</code></td><td>Ingresos − gastos del periodo</td></tr>
+    <tr><td><code>calculate_savings_rate</code></td><td>(Ingresos − gastos) / ingresos × 100 y estado</td></tr>
+    <tr><td><code>calculate_net_worth</code></td><td>Activos − pasivos; razón deuda/activos</td></tr>
+    <tr><td><code>calculate_asset / liability_distribution</code></td><td>Porcentaje por tipo</td></tr>
+    <tr><td><code>calculate_budget_execution</code></td><td>Gastado, restante y estado (ok/alerta/excedido)</td></tr>
+    <tr><td><code>calculate_monthly_variation</code></td><td>Comparación entre dos periodos</td></tr>
+    <tr><td><code>calculate_investment_allocation</code></td><td>Distribución y alertas de concentración</td></tr>
+    <tr><td><code>generate_financial_report</code></td><td>Informe integral del periodo</td></tr>
+  </table>
+  <p>La simulación de inversión aplica capitalización mensual con la tasa efectiva equivalente <i>r<sub>m</sub></i> = (1 + <i>r</i>)<sup>1/12</sup> − 1 y recursión <i>S<sub>k</sub></i> = <i>S<sub>k−1</sub></i>(1 + <i>r<sub>m</sub></i>) + <i>A</i>, donde <i>A</i> es el aporte mensual. El valor real descuenta la inflación anual supuesta. El resultado siempre se rotula como hipotético, ya que la tasa es un supuesto del usuario.</p>
+
+  <h3>C. Etapa 3: herramientas del agente (Capa 3)</h3>
+  <p class="ni">Cada herramienta es un módulo con un esquema JSON y una función <code>run(store, params)</code>. Se agrupan acciones relacionadas en una sola herramienta (Tabla III) para mantener pequeño el conjunto que ve el modelo. El despachador <code>execute_tool</code> captura los errores de validación y los devuelve al modelo como resultados de error, de modo que el ciclo nunca se interrumpe.</p>
+  <div class="tcap">TABLA III<b>Herramientas y acciones</b></div>
+  <table>
+    <tr><th>Herramienta</th><th>Acciones</th></tr>
+    <tr><td><code>manage_transaction</code></td><td>add, list, update*, delete*</td></tr>
+    <tr><td><code>calculate_net_worth</code></td><td>calculate, list, add_asset, add_liability, update_item*, remove_item*, snapshot, history</td></tr>
+    <tr><td><code>analyze_finances</code></td><td>summary, expenses_by_category, savings_capacity, recurring, compare_periods, budget_status, set/remove_budget*, goals*, report</td></tr>
+    <tr><td><code>investment_analysis</code></td><td>explain, add/list/update*/remove* de inversiones declaradas, allocation, simulate, compare_scenarios</td></tr>
+  </table>
+  <p class="note">* Requieren <code>confirm=true</code>, enviado solo tras la autorización explícita del usuario.</p>
+  <p>A modo de ejemplo, el esquema que recibe el modelo para la primera herramienta tiene la forma siguiente (resumido):</p>
+  <pre class="code">{ "name": "manage_transaction",
+  "description": "Gestiona movimientos ... Para
+    update y delete primero se muestra el detalle;
+    solo tras la autorización se repite con
+    confirm=true. Nunca inventes montos.",
+  "input_schema": { "type": "object",
+    "properties": {
+      "action": {"enum": ["add","list","update","delete"]},
+      "type": {"enum": ["income","expense"]},
+      "amount": {"type": "number"},
+      "category": {"type": "string"},
+      "date": {"type": "string"},
+      "transaction_id": {"type": "string"},
+      "confirm": {"type": "boolean"} },
+    "required": ["action"] } }</pre>
+  <p>Las inversiones declaradas son un registro y se suman al patrimonio como parte de los activos; esto evita el doble conteo y respeta que el sistema no ejecuta operaciones. Cada resultado incluye <code>data_used</code> y, cuando aplica, la fórmula, para que el usuario revise los datos que sustentan una cifra.</p>
+
+  <h3>D. Etapa 4: núcleo inteligente (Capa 2)</h3>
+  <p class="ni">La clase <code>FinanceAgent</code> implementa el <i>Agent Loop</i> (Fig. 2). Mantiene el historial de la conversación, llama a <code>messages.create</code> con las definiciones de herramientas y, mientras la parada sea <code>tool_use</code>, ejecuta cada herramienta y agrega los <code>tool_result</code>. El número de iteraciones está acotado y, si se agota, se pide al modelo un cierre sin herramientas. Si la API falla, el historial se revierte al punto previo para no dejar pares <code>tool_use/tool_result</code> incompletos. El recorte del historial siempre inicia en un mensaje de usuario con texto.</p>
+  <p>El <i>prompt</i> de sistema fija las reglas: consultar siempre las herramientas antes de dar cifras, preguntar cuando falte un dato, distinguir datos registrados de estimaciones, pedir autorización antes de modificar o eliminar, no pedir credenciales, no garantizar rentabilidades y aclarar que la información es educativa. El proveedor y el modelo se eligen en <code>.env</code> (<code>FINANZAS_PROVIDER</code> y <code>FINANZAS_MODEL</code>).</p>
+  <p>Para no depender de una clave de pago se añadió el módulo <code>llm.py</code>, un adaptador que expone la misma interfaz mínima del cliente de Anthropic y traduce las herramientas y los mensajes al formato de la API compatible con OpenAI, que ofrecen Gemini [18], Groq y Ollama. Así el <i>Agent Loop</i> y las herramientas son idénticos para cualquier proveedor. Los modelos pequeños o locales pueden elegir peor las herramientas que un modelo grande, por lo que las salvaguardas se aplican en las herramientas y no solo en el <i>prompt</i>. Al probar con un modelo real se descubrió que Gemini exige devolver, en el historial, la firma de razonamiento (<i>thought signature</i>) de cada llamada a herramienta; de lo contrario responde con un error 400. El adaptador la conserva sin cambios y, además, reintenta con esperas crecientes ante errores temporales (429 y 5xx). El <i>prompt</i> pide respuestas en texto plano para que se vean bien en consola y web.</p>
+<figure class="wide">
+<svg viewBox="0 0 1000 250" width="92%" xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif" font-size="12">
+  <defs><marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#333" stroke-width="2"/></marker></defs>
+  <rect width="1000" height="250" fill="#fff"/>
+  <g text-anchor="middle" font-weight="bold">
+    <rect x="20" y="10" width="140" height="30" fill="#e8eefc" stroke="#333"/><text x="90" y="30">Usuario</text>
+    <rect x="215" y="10" width="140" height="30" fill="#e8eefc" stroke="#333"/><text x="285" y="30">FinanceAgent</text>
+    <rect x="410" y="10" width="140" height="30" fill="#e8eefc" stroke="#333"/><text x="480" y="30">LLM (API)</text>
+    <rect x="605" y="10" width="140" height="30" fill="#e8eefc" stroke="#333"/><text x="675" y="30">tools/*</text>
+    <rect x="800" y="10" width="170" height="30" fill="#e8eefc" stroke="#333"/><text x="885" y="30">functions + storage</text>
+  </g>
+  <g stroke="#999" stroke-dasharray="4 3"><path d="M90 40V240M285 40V240M480 40V240M675 40V240M885 40V240"/></g>
+  <g stroke="#333" stroke-width="1.6" fill="none" marker-end="url(#a2)">
+    <path d="M90 62H285"/><path d="M285 88H480"/><path d="M480 114H285"/><path d="M285 140H675"/><path d="M675 166H885"/><path d="M885 192H675" /><path d="M675 206H285"/><path d="M285 222H480"/>
+  </g>
+  <g>
+    <text x="100" y="56">1. consulta</text><text x="295" y="82">2. mensajes + herramientas</text><text x="295" y="108">3. tool_use (nombre, args)</text>
+    <text x="295" y="134">4. execute_tool()</text><text x="685" y="160">5. validar y calcular</text><text x="690" y="186">6. resultado / error</text><text x="395" y="200" >7. tool_result</text><text x="295" y="216">8. segunda llamada → texto final (8.1: vuelve a 2 si hay más tool_use)</text>
+  </g>
+</svg>
+<figcaption>Fig. 2. Secuencia del <i>Agent Loop</i>: el modelo solo decide la herramienta; el cálculo ocurre en funciones deterministas.</figcaption>
+</figure>
+  <h3>E. Etapa 5: interfaz de consola</h3>
+  <p class="ni"><code>main.py</code> abre una conversación en terminal. Además del chat en lenguaje natural ofrece comandos que no consumen el modelo: <code>/resumen</code>, <code>/patrimonio</code>, <code>/graficos</code>, <code>/datos</code>, <code>/reset</code> y <code>/salir</code>. Si falta la configuración del modelo (por ejemplo, la clave del proveedor) informa qué falta y mantiene operativos los comandos. Con la opción <code>--show-tools</code> muestra qué herramientas usó el agente, lo que aporta transparencia.</p>
+
+  <h3>F. Etapa 6: panel web</h3>
+  <p class="ni">El panel (<code>app.py</code>) incluye tres páginas: el asistente conversacional, el panel con indicadores, ocho gráficos, presupuestos, objetivos y patrimonio, y el historial de movimientos con alta, filtros, edición y eliminación con confirmación del navegador. El contenido proveniente del usuario se escapa antes de insertarse en el DOM para evitar inyección de código. El servidor escucha únicamente en <code>127.0.0.1</code>.</p>
+
+  <h3>G. Etapa 7: API REST</h3>
+  <p class="ni">La API (Tabla IV) reutiliza las herramientas del agente, de modo que la validación existe en un único lugar y no se duplica. Se traducen los estados a códigos HTTP: 201 al crear, 400 por validación, 404 si el registro no existe y 502/503 si falla o no está configurado el modelo. Las peticiones PUT y DELETE se consideran acciones explícitas del usuario, por lo que envían la confirmación internamente.</p>
+  <div class="tcap">TABLA IV<b>Endpoints principales de la API</b></div>
+  <table>
+    <tr><th>Método</th><th>Ruta</th></tr>
+    <tr><td>GET/POST</td><td><code>/api/transactions</code></td></tr>
+    <tr><td>PUT/DELETE</td><td><code>/api/transactions/&lt;id&gt;</code></td></tr>
+    <tr><td>GET/POST/PUT/DELETE</td><td><code>/api/assets</code>, <code>/api/liabilities</code>, <code>/api/investments</code></td></tr>
+    <tr><td>GET/POST</td><td><code>/api/networth</code>, <code>/api/networth/snapshot</code></td></tr>
+    <tr><td>GET/PUT/DELETE</td><td><code>/api/budgets</code>, <code>/api/goals</code></td></tr>
+    <tr><td>GET/POST</td><td><code>/api/summary</code>, <code>/api/report</code>, <code>/api/charts/&lt;n&gt;.png</code></td></tr>
+    <tr><td>POST</td><td><code>/api/investments/simulate</code>, <code>/api/chat</code></td></tr>
+  </table>
+
+  <h3>H. Etapa 8: persistencia, seguridad y pruebas</h3>
+  <p class="ni">La clase <code>DataStore</code> valida la estructura, guarda de forma atómica (archivo temporal más reemplazo), crea una copia de seguridad antes de cada guardado conservando las últimas diez y, si el JSON se daña, restaura la copia válida más reciente. El archivo tiene la forma siguiente:</p>
+  <pre class="code">{ "version": 1,
+  "profile": {"currency": "COP", "demo": false},
+  "transactions": [ {"id","type","amount","category",
+                     "description","date"} ],
+  "assets": [], "liabilities": [], "investments": [],
+  "budgets": {"Alimentación": "600000.00"},
+  "goals": [], "history": [] }</pre>
+  <p>Las salvaguardas de seguridad se resumen así: (i) los datos reales no se versionan (<code>.gitignore</code>); (ii) se rechazan textos con apariencia de número de tarjeta (13 a 19 dígitos); (iii) la modificación y eliminación exigen confirmación; (iv) las simulaciones se marcan como hipotéticas y se acompañan de advertencias sobre riesgo, comisiones, inflación y pérdida de capital; y (v) el modelo recibe la instrucción de no ejecutar operaciones ni solicitar credenciales. Los datos ficticios de demostración se almacenan en un archivo separado y el panel muestra un aviso cuando se usan.</p>
+</div>
+
+<div class="paper">
+  <h3>I. Instalación y ejecución</h3>
+  <p class="ni">El proyecto requiere Python 3.12 o compatible. Los pasos en Windows (PowerShell) son los siguientes:</p>
+  <pre class="code">cd finanzas_ai
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+copy .env.example .env   # elegir proveedor y clave
+python main.py           # consola
+python app.py            # web: http://127.0.0.1:5000
+python -m pytest -q      # 89 pruebas</pre>
+  <p>Para probar con datos ficticios se ejecuta <code>python scripts/load_demo.py</code> y se define <code>FINANZAS_DATA_PATH=data/finanzas_demo.json</code>. El archivo <code>.env</code> no se versiona y el modelo puede cambiarse con <code>FINANZAS_MODEL</code>.</p>
+
+  <h2>V. Resultados</h2>
+  <h3>A. Pruebas automatizadas</h3>
+  <p class="ni">Se escribieron 89 pruebas con pytest [19] (Tabla V), todas aprobadas en 4,39 s (Fig. 3). Cubren la aritmética decimal (por ejemplo, 0,1 + 0,2 = 0,30 exacto), los casos límite (montos negativos, no numéricos, fechas inválidas, números de tarjeta), las confirmaciones, la persistencia, la recuperación ante un archivo dañado, el <i>Agent Loop</i> con un cliente simulado (sin consumir la API), el adaptador de proveedores (con un servidor simulado), la API REST y la generación de los ocho gráficos.</p>
+  <div class="tcap">TABLA V<b>Pruebas automatizadas por módulo</b></div>
+  <table>
+    <tr><th>Archivo</th><th>Cubre</th><th>Pruebas</th></tr>
+    <tr><td><code>test_functions.py</code></td><td>Cálculos, validaciones, simulación</td><td class="r">28</td></tr>
+    <tr><td><code>test_tools.py</code></td><td>Herramientas, confirmaciones, backups</td><td class="r">25</td></tr>
+    <tr><td><code>test_agent.py</code></td><td>Agent Loop, contexto, errores</td><td class="r">10</td></tr>
+    <tr><td><code>test_api.py</code></td><td>API, páginas, gráficos, demo</td><td class="r">10</td></tr>
+    <tr><td><code>test_llm.py</code></td><td>Adaptador de proveedores, reintentos, firma de Gemini</td><td class="r">16</td></tr>
+    <tr><td colspan="2"><b>Total</b></td><td class="r"><b>89</b></td></tr>
+  </table>
+<figure class="wide" style="width:62%;margin-left:auto;margin-right:auto">
+<pre class="term">$ python -m pytest
+tests\test_agent.py      ..........                       [ 11%]
+tests\test_api.py        ..........                       [ 22%]
+tests\test_functions.py  ............................     [ 53%]
+tests\test_llm.py        ................                 [ 71%]
+tests\test_tools.py      .........................        [100%]
+
+<span class="g">============================== 89 passed in 4.39s ==============================</span></pre>
+<figcaption>Fig. 3. Resultado de la ejecución de las pruebas automatizadas (salida real de la terminal).</figcaption>
+</figure>
+  <h3>B. Pruebas funcionales en consola</h3>
+  <p class="ni">Se ejecutó la CLI con datos de demostración (Fig. 4). Los comandos <code>/resumen</code> y <code>/patrimonio</code> devolvieron cifras idénticas a las del panel web y a las calculadas manualmente (Tabla VI). Si el modelo no está configurado, el chat responde con un mensaje de configuración y no se interrumpe el programa.</p>
+<figure class="wide" style="width:70%;margin-left:auto;margin-right:auto">
+<pre class="term"><span class="p">$ python main.py</span>
+==============================================================
+  Agente Inteligente de Finanzas Personales  (modo educativo)
+  Escriba su consulta en lenguaje natural.  /ayuda para ver comandos
+==============================================================
+Modelo: gemini-3.5-flash-lite (proveedor: gemini)
+
+<span class="p">Tú &gt;</span> /resumen
+Resumen 2026-11
+  Ingresos : $ 3.500.000,00
+  Gastos   : $ 2.350.000,00
+  Flujo    : $ 1.150.000,00
+  Ahorro   : 32.86 %
+
+<span class="p">Tú &gt;</span> /patrimonio
+  Activos : $ 13.000.000,00
+  Pasivos : $ 4.800.000,00
+  Patrimonio neto: $ 8.200.000,00
+
+<span class="p">Tú &gt;</span> /datos
+Datos: data\finanzas_demo.json
+Copias de seguridad: data\backups
+<span class="p">Tú &gt;</span> /salir
+Hasta pronto.</pre>
+<figcaption>Fig. 4. Sesión de la CLI con datos de demostración (salida real de la terminal).</figcaption>
+</figure>
+  <div class="tcap">TABLA VI<b>Verificación manual de cálculos (datos de demostración, nov. 2026)</b></div>
+  <table>
+    <tr><th>Indicador</th><th>Cálculo manual</th><th>Sistema</th></tr>
+    <tr><td>Gastos del mes</td><td>0,9 + 0,21 + 0,61 + 0,17 + 0,21 + 0,25 M</td><td class="r">$2.350.000</td></tr>
+    <tr><td>Flujo de caja</td><td>3.500.000 − 2.350.000</td><td class="r">$1.150.000</td></tr>
+    <tr><td>Tasa de ahorro</td><td>1.150.000 / 3.500.000</td><td class="r">32,86 %</td></tr>
+    <tr><td>Activos totales</td><td>8,8 M + 4,2 M inversiones</td><td class="r">$13.000.000</td></tr>
+    <tr><td>Patrimonio neto</td><td>13.000.000 − 4.800.000</td><td class="r">$8.200.000</td></tr>
+    <tr><td>Deuda / activos</td><td>4.800.000 / 13.000.000</td><td class="r">36,92 %</td></tr>
+    <tr><td>Simulación 10 %, 2 años</td><td>1.000.000 × 1,10²</td><td class="r">$1.210.000</td></tr>
+  </table>
+
+  <h3>C. Pruebas funcionales en web</h3>
+  <p class="ni">Se abrió el panel en el navegador con los datos de demostración (Fig. 5–8). El panel muestra siete indicadores, ocho gráficos, la ejecución del presupuesto (alimentación y entretenimiento aparecen como <i>excedido</i>, transporte y vivienda como <i>alerta</i>), el avance de los objetivos y el patrimonio. La consola del navegador no registró errores y la vista se adapta a pantallas estrechas.</p>
+<figure class="wide" style="width:80%;margin-left:auto;margin-right:auto">
+  <img src="img/web_dashboard_top.png" alt="Panel">
+  <figcaption>Fig. 5. Panel financiero: indicadores y gráficos (datos de demostración).</figcaption>
+</figure>
+<figure class="wide" style="width:80%;margin-left:auto;margin-right:auto">
+  <img src="img/web_dashboard_bottom.png" alt="Panel inferior">
+  <figcaption>Fig. 6. Panel financiero: presupuesto, objetivos de ahorro y patrimonio con formularios de alta.</figcaption>
+</figure>
+<figure class="wide" style="width:80%;margin-left:auto;margin-right:auto">
+  <img src="img/web_transactions.png" alt="Movimientos">
+  <figcaption>Fig. 7. Página de movimientos: registro, filtros, edición y eliminación.</figcaption>
+</figure>
+<figure class="wide" style="width:80%;margin-left:auto;margin-right:auto">
+  <img src="img/web_chat_c.png" alt="Asistente">
+  <figcaption>Fig. 8. Interfaz conversacional del asistente con consultas sugeridas.</figcaption>
+</figure>
+  <h3>D. Pruebas de la API REST</h3>
+  <p class="ni">Se ejecutó un flujo completo contra un almacenamiento vacío (Fig. 9): creación (201), validación de montos negativos y de datos bancarios (400), actualización, eliminación y consulta de un recurso inexistente (404). Las respuestas incluyen mensajes claros y códigos de error estables.</p>
+<figure class="wide">
+<pre class="term">[[EV:api]]</pre>
+<figcaption>Fig. 9. Flujo de pruebas de la API REST (salida real; las respuestas largas se truncan).</figcaption>
+</figure>
+  <h3>E. Comportamiento del agente y control de autorización</h3>
+  <p class="ni">La Fig. 10 muestra una traza del <i>Agent Loop</i> con un cliente simulado que reproduce las decisiones del modelo. La consulta de eliminación devuelve <code>needs_confirmation</code> y el registro permanece intacto hasta que el usuario autorice, lo que demuestra que la salvaguarda se aplica en la herramienta y no solo en el <i>prompt</i>.</p>
+<figure class="wide" style="width:86%;margin-left:auto;margin-right:auto">
+<pre class="term">[[EV:agent_trace]]</pre>
+<figcaption>Fig. 10. Traza del Agent Loop con cliente simulado (sin llamada real a la API).</figcaption>
+</figure>
+  <h3>F. Validación con un modelo de lenguaje real</h3>
+  <p class="ni">Se probó el sistema con Gemini 3.5 Flash-Lite (capa gratuita de Google) sobre una copia de los datos de demostración. La Fig. 11 muestra seis consultas hechas con el mismo <i>Agent Loop</i> que usan la consola y la web; la Fig. 12, una sesión real de <code>main.py</code>; y la Fig. 13, el punto <code>/api/chat</code> con contexto de conversación. En todos los casos el modelo eligió la herramienta correcta y las cifras coincidieron con el cálculo manual de la Tabla VI: gastos de $2.350.000, patrimonio neto de $8.200.000 y tasa de ahorro de 31,77 % tras registrar un almuerzo de $38.000 (gastos de $2.388.000). La simulación con $2.000.000, aporte mensual de $150.000, 8 % anual y 3 años arrojó $8.574.229,36, igual al valor obtenido con un cálculo independiente. Al pedir eliminar el almuerzo, el agente mostró el detalle y solicitó autorización sin borrar el registro (el número de movimientos quedó en 22: el almuerzo no se borró).</p>
+  <p>La validación también expuso problemas reales que se corrigieron. Primero, el modelo gemini-3.8-flash devolvió errores 503 por saturación y luego 429 porque la capa gratuita permite solo 20 solicitudes diarias por modelo, lo que motivó los reintentos y el cambio al modelo Flash-Lite, que tiene cuota propia. Segundo, los modelos Gemini actuales rechazaron el historial sin la firma de razonamiento (error 400), lo que llevó a conservarla. Tercero, las primeras respuestas incluían fórmulas en LaTeX y negritas que no se ven bien en una consola, por lo que se ajustó el <i>prompt</i> a texto plano.</p>
+  <h3>G. Gráficos generados</h3>
+  <p class="ni">Los ocho gráficos solicitados se generan con Matplotlib (Fig. 14): ingresos frente a gastos, evolución del patrimonio, distribución de gastos, de activos y de pasivos, evolución del ahorro, distribución del capital invertido y comparación de presupuestos. Todos incluyen título, ejes etiquetados y unidades monetarias; si no hay datos, muestran un mensaje en lugar de fallar, hecho comprobado en las pruebas.</p>
+<figure class="wide" style="width:86%;margin-left:auto;margin-right:auto">
+<pre class="term">[[EV:real_llm_raw]]</pre>
+<figcaption>Fig. 11. Seis consultas al agente con Gemini 3.5 Flash-Lite (salida real de la terminal).</figcaption>
+</figure>
+<figure class="wide" style="width:70%;margin-left:auto;margin-right:auto">
+<pre class="term"><span class="p">$ python main.py --show-tools</span>
+Modelo: gemini-3.5-flash-lite (proveedor: gemini)
+
+<span class="p">Tú &gt;</span> ¿Cuánto dinero he recibido este mes?
+  · herramienta: analyze_finances summary -&gt; ok
+Asesor &gt; Durante este mes (noviembre de 2026) has recibido un total de $3.500.000,00, según 1 registro de ingresos en el sistema.
+
+<span class="p">Tú &gt;</span> ¿Cuál es mi patrimonio neto?
+  · herramienta: calculate_net_worth calculate -&gt; ok
+Asesor &gt; Tu patrimonio neto actual es de $8.200.000,00.
+Patrimonio neto = total de activos - total de pasivos
+- Total de activos (efectivo, ahorros, bienes muebles e inversiones declaradas): $13.000.000,00
+- Total de pasivos (tarjetas de crédito y préstamos): $4.800.000,00
+<span class="p">Tú &gt;</span> /salir
+Hasta pronto.</pre>
+<figcaption>Fig. 12. Sesión real de la CLI con el modelo configurado (salida real, abreviada: sin el banner de bienvenida y con las respuestas resumidas).</figcaption>
+</figure>
+<figure class="wide" style="width:86%;margin-left:auto;margin-right:auto">
+<pre class="term">[[EV:real_web_raw]]</pre>
+<figcaption>Fig. 13. Consultas al punto <code>/api/chat</code> con el modelo real; la segunda reutiliza el mismo <code>session_id</code> (contexto).</figcaption>
+</figure>
+<figure class="wide">
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px">
+    <img src="../static/charts/income_vs_expenses.png"><img src="../static/charts/net_worth_evolution.png"><img src="../static/charts/expense_distribution.png"><img src="../static/charts/asset_distribution.png">
+    <img src="../static/charts/liability_distribution.png"><img src="../static/charts/savings_evolution.png"><img src="../static/charts/capital_distribution.png"><img src="../static/charts/budget_comparison.png">
+  </div>
+  <figcaption>Fig. 14. Los ocho gráficos de <code>charts.py</code> generados con datos de demostración.</figcaption>
+</figure>
+  <h3>H. Pruebas de validación y seguridad</h3>
+  <p class="ni">Además de los casos de uso normales se probaron entradas inválidas y escenarios de falla (Tabla VII). En todos los casos el sistema respondió con un error controlado, sin modificar los datos almacenados y sin interrumpir el programa.</p>
+  <div class="tcap">TABLA VII<b>Casos de validación y seguridad verificados</b></div>
+  <table>
+    <tr><th>Entrada o escenario</th><th>Resultado obtenido</th></tr>
+    <tr><td>Monto negativo, cero o no numérico</td><td>Error de validación (400); no se guarda nada</td></tr>
+    <tr><td>Descripción con número de tarjeta (16 dígitos)</td><td>Rechazo por datos bancarios sensibles</td></tr>
+    <tr><td>Categoría inexistente o fecha 31/12/2026</td><td>Error con las opciones o el formato válidos</td></tr>
+    <tr><td>Periodo 2026-13</td><td>Error 400: formato AAAA-MM</td></tr>
+    <tr><td>Eliminar o actualizar sin <code>confirm</code></td><td><code>needs_confirmation</code>; registro intacto</td></tr>
+    <tr><td>Cambiar un presupuesto ya definido</td><td>Solicita confirmación previa</td></tr>
+    <tr><td>Id inexistente</td><td>Error 404 <code>not_found</code></td></tr>
+    <tr><td>JSON dañado con copia de seguridad</td><td>Restaura la última copia válida</td></tr>
+    <tr><td>JSON dañado sin copias</td><td>Error explícito; conserva copia del archivo dañado</td></tr>
+    <tr><td>Falla de red o API del modelo</td><td>Historial revertido; mensaje de error al usuario</td></tr>
+    <tr><td>Proveedor sin clave o desconocido</td><td>Mensaje de configuración (503 en la API)</td></tr>
+    <tr><td>Respuesta con argumentos de herramienta inválidos</td><td>Se tratan como vacíos; la herramienta responde con error de validación</td></tr>
+    <tr><td>Gráficos sin datos registrados</td><td>Imagen con el mensaje «Sin datos registrados»</td></tr>
+  </table>
+
+  <h3>I. Cumplimiento de los requisitos</h3>
+  <div class="tcap">TABLA VIII<b>Requisitos del parcial y evidencia</b></div>
+  <table>
+    <tr><th>Requisito</th><th>Evidencia</th></tr>
+    <tr><td>Agente en Python 3 con tema y alcance definidos</td><td>Secciones IV-A y IV-B</td></tr>
+    <tr><td>Pasos del profesor (arquitectura de 5 capas)</td><td>Fig. 1, Tabla I</td></tr>
+    <tr><td>Pruebas funcionales en consola</td><td>Fig. 3, Fig. 4, Fig. 11, Fig. 12, Tabla VI</td></tr>
+    <tr><td>Pruebas funcionales en web</td><td>Fig. 5–9, Fig. 13</td></tr>
+    <tr><td>Informe con formato IEEE</td><td>Este documento</td></tr>
+  </table>
+
+  <h2>VI. Discusión y limitaciones</h2>
+  <p>La separación entre el modelo y la lógica financiera permitió verificar los cálculos de forma independiente de la API: las 89 pruebas se ejecutan sin red y sin costo. Este diseño reduce el riesgo de cifras inventadas, aunque no lo elimina por completo: el modelo podría redactar mal una explicación, por lo que el sistema incluye en cada resultado los datos usados y las fórmulas para su revisión.</p>
+  <p>Se identifican las siguientes limitaciones. Primero, las pruebas del <i>Agent Loop</i> usan clientes simulados para no depender de la red ni de una clave; la calidad de la selección de herramientas con lenguaje natural libre debe evaluarse con consultas reales y varía según el modelo, sobre todo si es pequeño o local. Segundo, la persistencia en JSON es adecuada para un usuario, pero no para concurrencia intensa. Tercero, no hay autenticación en la API, pues está pensada para uso local. Cuarto, los gráficos usan pesos colombianos (COP) en los títulos, y otras monedas requerirían parametrizarlos. Quinto, el sistema es educativo: no considera impuestos ni comisiones reales y no sustituye a un asesor financiero autorizado.</p>
+  <p>Como trabajo futuro se proponen importar extractos bancarios de forma segura, categorizar gastos automáticamente, añadir autenticación y base de datos, y evaluar sistemáticamente la precisión del agente con un conjunto de preguntas de referencia.</p>
+
+  <h2>VII. Conclusiones</h2>
+  <ol>
+    <li>Se construyó un agente inteligente funcional y modular de cinco capas, que cumple el alcance definido y opera por consola, web y API REST sobre el mismo núcleo.</li>
+    <li>Delegar los cálculos a funciones con <code>Decimal</code> y dejar al LLM solo la interpretación y la selección de herramientas hace los resultados verificables y reproducibles; la verificación manual coincidió con el sistema.</li>
+    <li>Las salvaguardas implementadas en las herramientas (confirmación, rechazo de datos bancarios, advertencias y marcado de hipótesis) son más robustas que depender únicamente de instrucciones en el <i>prompt</i>.</li>
+    <li>Las 89 pruebas automatizadas y las pruebas funcionales respaldan el comportamiento descrito. El adaptador de proveedores permite operar con modelos gratuitos o locales, sin depender de una clave de pago; con un modelo real gratuito (Gemini 3.5 Flash-Lite) el agente respondió correctamente consultas en consola y web, y sus cifras coincidieron con el cálculo independiente.</li>
+    <li>El proyecto aplica los conceptos de la asignatura (percepción, procesamiento, acción y agentes basados en objetivos) a un problema cotidiano con impacto social potencial en educación financiera.</li>
+  </ol>
+
+  <h2>Referencias</h2>
+  <div class="refs"><ol>
+    <li>A. Lusardi and O. S. Mitchell, “The economic importance of financial literacy: Theory and evidence,” <i>J. Econ. Lit.</i>, vol. 52, no. 1, pp. 5–44, Mar. 2014.</li>
+    <li>OECD, <i>OECD/INFE 2020 International Survey of Adult Financial Literacy</i>. Paris, France: OECD Publishing, 2020.</li>
+    <li>S. Yao <i>et al.</i>, “ReAct: Synergizing reasoning and acting in language models,” in <i>Proc. Int. Conf. Learn. Represent. (ICLR)</i>, 2023. [Online]. Available: https://arxiv.org/abs/2210.03629</li>
+    <li>T. Schick <i>et al.</i>, “Toolformer: Language models can teach themselves to use tools,” in <i>Proc. Adv. Neural Inf. Process. Syst. (NeurIPS)</i>, 2023. [Online]. Available: https://arxiv.org/abs/2302.04761</li>
+    <li>Anthropic, “Building effective agents,” Dec. 2024. Accessed: Nov. 17, 2026. [Online]. Available: https://www.anthropic.com/research/building-effective-agents</li>
+    <li>Corporación Universitaria del Huila, “Agentes inteligentes: La revolución de la inteligencia artificial autónoma,” class slides, Electiva – Aplicaciones con Inteligencia Artificial, Neiva, Colombia, 2026.</li>
+    <li>S. Russell and P. Norvig, <i>Artificial Intelligence: A Modern Approach</i>, 4th ed. Hoboken, NJ, USA: Pearson, 2020.</li>
+    <li>Anthropic, “Tool use with Claude,” Anthropic Docs. Accessed: Nov. 17, 2026. [Online]. Available: https://docs.anthropic.com/en/docs/build-with-claude/tool-use</li>
+    <li>Anthropic, “anthropic-sdk-python,” GitHub repository. Accessed: Nov. 17, 2026. [Online]. Available: https://github.com/anthropics/anthropic-sdk-python</li>
+    <li>D. Goldberg, “What every computer scientist should know about floating-point arithmetic,” <i>ACM Comput. Surv.</i>, vol. 23, no. 1, pp. 5–48, Mar. 1991.</li>
+    <li><i>IEEE Standard for Floating-Point Arithmetic</i>, IEEE Std 754-2019, Jul. 2019.</li>
+    <li>Python Software Foundation, “decimal — Decimal fixed-point and floating-point arithmetic,” Python 3.12 Documentation. Accessed: Nov. 17, 2026. [Online]. Available: https://docs.python.org/3.12/library/decimal.html</li>
+    <li>H. Markowitz, “Portfolio selection,” <i>J. Finance</i>, vol. 7, no. 1, pp. 77–91, Mar. 1952.</li>
+    <li>M. Grinberg, <i>Flask Web Development</i>, 2nd ed. Sebastopol, CA, USA: O’Reilly Media, 2018.</li>
+    <li>R. T. Fielding, “Architectural styles and the design of network-based software architectures,” Ph.D. dissertation, Dept. Inf. Comput. Sci., Univ. California, Irvine, CA, USA, 2000.</li>
+    <li>J. D. Hunter, “Matplotlib: A 2D graphics environment,” <i>Comput. Sci. Eng.</i>, vol. 9, no. 3, pp. 90–95, May–Jun. 2007.</li>
+    <li>Anthropic, “Claude Code overview,” Anthropic Docs. Accessed: Nov. 17, 2026. [Online]. Available: https://docs.anthropic.com/en/docs/claude-code/overview</li>
+    <li>Google, “OpenAI compatibility,” Gemini API Documentation. Accessed: Nov. 17, 2026. [Online]. Available: https://ai.google.dev/gemini-api/docs/openai</li>
+    <li>pytest-dev, “pytest documentation.” Accessed: Nov. 17, 2026. [Online]. Available: https://docs.pytest.org</li>
+  </ol></div>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,23 @@
+
+==============================================================
+  Agente Inteligente de Finanzas Personales  (modo educativo)
+  Escriba su consulta en lenguaje natural.  /ayuda para ver comandos
+==============================================================
+
+Aviso: no hay ANTHROPIC_API_KEY. Los comandos '/' funcionan, pero el chat requiere la clave (.env).
+
+Tú > Tú > 
+Resumen 2026-11
+  Ingresos : $ 3.500.000,00
+  Gastos   : $ 2.350.000,00
+  Flujo    : $ 1.150.000,00
+  Ahorro   : 32.86 %
+
+Tú > 
+  Activos : $ 13.000.000,00
+  Pasivos : $ 4.800.000,00
+  Patrimonio neto: $ 8.200.000,00
+
+Tú > Datos: data\finanzas_demo.json
+Copias de seguridad: data\backups
+Tú > Hasta pronto.

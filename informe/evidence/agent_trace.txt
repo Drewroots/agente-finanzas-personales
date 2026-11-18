@@ -1,0 +1,8 @@
+Usuario: Gasté 45000 en el mercado
+Agente: Registré tu gasto de $45.000 en Alimentación.
+  [herramienta] manage_transaction {"action": "add", "type": "expense", "amount": 45000, "category": "Alimentación", "description": "Mercado"} -> ok
+
+Usuario: Elimina ese gasto
+Agente: Vas a eliminar el gasto de $45.000. ¿Confirmas?
+  [herramienta] manage_transaction {"action": "delete", "transaction_id": "t_83827bbe"} -> needs_confirmation
+  Movimientos almacenados tras la consulta: 1 (no se eliminó sin autorización)

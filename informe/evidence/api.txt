@@ -1,0 +1,32 @@
+> POST /api/transactions  {"type": "income", "amount": 3500000, "category": "Salario", "description": "Nómina", "date": "2026-11-01"}
+< 201  {"message": "Movimiento registrado.", "status": "ok", "transaction": {"amount": "3500000.00", "category": "Salario", "date": "2026-11-01", "description": "Nómina", "id": "t_da310d3c", "type": "income"}}
+
+> POST /api/transactions  {"type": "expense", "amount": 45000, "category": "Alimentación", "description": "Mercado", "date": "2026-11-03"}
+< 201  {"message": "Movimiento registrado.", "status": "ok", "transaction": {"amount": "45000.00", "category": "Alimentación", "date": "2026-11-03", "description": "Mercado", "id": "t_cbbd44bb", "type": "expense"}}
+
+> POST /api/transactions  {"type": "expense", "amount": -5}
+< 400  {"code": "validation", "message": "El campo 'amount' debe ser mayor que cero.", "status": "error"}
+
+> POST /api/transactions  {"type": "expense", "amount": 10, "description": "tarjeta 4111 1111 1111 1111"}
+< 400  {"code": "validation", "message": "El campo 'description' parece contener un número de tarjeta o cuenta. Por seguridad no se almacenan datos bancarios sensibles.", "status": "error"}
+
+> POST /api/assets  {"name": "Cuenta de ahorros", "type": "ahorros", "value": 2000000}
+< 201  {"item": {"id": "a_56df2441", "name": "Cuenta de ahorros", "type": "ahorros", "updated": "2026-11-17", "value": "2000000.00"}, "message": "Activo registrado.", "status": "ok"}
+
+> POST /api/liabilities  {"name": "Préstamo", "type": "prestamo", "value": 500000}
+< 201  {"item": {"id": "l_ec6bcd39", "name": "Préstamo", "type": "prestamo", "updated": "2026-11-17", "value": "500000.00"}, "message": "Pasivo registrado.", "status": "ok"}
+
+> GET /api/networth
+< 200  {"asset_distribution": {"items": [{"label": "Cuentas de ahorro", "pct": "100.00", "total": "2000000.00", "type": "ahorros"}], "total": "2000000.00"}, "data_used": {"assets": [["Cuenta de ahorros", "2000000.00"]], "investments": []…
+
+> POST /api/investments/simulate  {"principal": 1000000, "monthly_contribution": 0, "annual_rate_pct": 10, "years": 2}
+< 200  {"disclaimer": "Información educativa basada en los datos registrados; no constituye asesoría financiera profesional ni garantiza resultados.", "hypothetical": true, "simulation": {"annual_rate_pct": "10.00", "final_nominal": "121…
+
+> PUT /api/transactions/t_cbbd44bb  {"amount": 50000}
+< 200  {"message": "Movimiento actualizado.", "status": "ok", "transaction": {"amount": "50000.00", "category": "Alimentación", "date": "2026-11-03", "description": "Mercado", "id": "t_cbbd44bb", "type": "expense"}}
+
+> DELETE /api/transactions/t_cbbd44bb
+< 200  {"deleted": {"amount": "50000.00", "category": "Alimentación", "date": "2026-11-03", "description": "Mercado", "id": "t_cbbd44bb", "type": "expense"}, "message": "Movimiento eliminado.", "status": "ok"}
+
+> DELETE /api/transactions/t_cbbd44bb
+< 404  {"code": "not_found", "message": "No existe un movimiento con id 't_cbbd44bb'.", "status": "error"}
